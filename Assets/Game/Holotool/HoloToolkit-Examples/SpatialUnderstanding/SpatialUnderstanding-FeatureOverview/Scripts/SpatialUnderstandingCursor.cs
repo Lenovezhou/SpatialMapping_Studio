@@ -161,12 +161,12 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 					target.transform.position = transform.position + Camera.main.transform.right * 0.05f;
 				}
 
-          		//		Cursor 设置提示
-                CursorText.gameObject.SetActive(true);
-                CursorText.text = rayCastResult.SurfaceType.ToString();
+          		////		Cursor 设置提示
+            //    CursorText.gameObject.SetActive(true);
+            //    CursorText.text = rayCastResult.SurfaceType.ToString();
 
-                CursorText.transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward, Vector3.up);
-                CursorText.transform.position = transform.position + Camera.main.transform.right * 0.05f;
+            //    CursorText.transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward, Vector3.up);
+            //    CursorText.transform.position = transform.position + Camera.main.transform.right * 0.05f;
             }
             else
             {

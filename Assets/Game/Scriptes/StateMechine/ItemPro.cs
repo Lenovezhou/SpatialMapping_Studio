@@ -8,9 +8,35 @@ public enum ClickState
 	Ido,Move,Rotate,Scale,Delet,OpenUI,CloseUI
 }
 
-public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandler
+public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandler,IManipulationHandler
 {
-    #region IInputClickHandler implementation
+
+    #region ImanipulationHandler实现
+    public void OnManipulationStarted(ManipulationEventData eventData)
+    {
+    }
+
+    public void OnManipulationUpdated(ManipulationEventData eventData)
+    {
+        Vector3 temp = eventData.CumulativeDelta;
+        if (_cS == ClickState.Rotate)
+        {
+            Debug.Log(temp.x);
+        //    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + temp.x, transform.localEulerAngles.z);
+        }
+    }
+
+    public void OnManipulationCompleted(ManipulationEventData eventData)
+    {
+    }
+
+    public void OnManipulationCanceled(ManipulationEventData eventData)
+    {
+    }
+
+    #endregion
+
+    #region IInputClickHandler 实现
 
     public void OnInputUp(InputEventData eventData)
     {
@@ -26,7 +52,6 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 
     public void OnInputClicked (InputClickedEventData eventData)
 	{
-        Debug.Log("Air tap 时 _cS::::::" + _cS.ToString());
         if (_cS == ClickState.Ido || _cS == ClickState.CloseUI)
         {
             ChangeState(ClickState.OpenUI);
@@ -45,7 +70,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	#endregion
 
 	
-	#region IFocusable implementation
+	#region IFocusable 实现
 
 	public void OnFocusEnter ()
 	{
@@ -122,11 +147,9 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	//打开UI
 	void OpenUIEnter()
 	{
-        if (UI == null)
-        {
-            UI = ObjectPool.Instance.Spawn("ItemUI");
-        }
 
+        UI = ObjectPool.Instance.Spawn("ItemUI");
+ 
         box.enabled = false;
 
         Transform pos = transform.Find ("UIPos");
@@ -184,7 +207,11 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 		cursor.Target = null;
 	}
 
-	//旋转
+    //旋转
+    void RoateOnEnter()
+    {
+        
+    }
 	void RotateUpdater(float timer)
 	{
 		
@@ -199,7 +226,8 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	//删除
 	void DeleteEnter()
 	{
-		ObjectPool.Instance.UnSpawn (gameObject);
+        ObjectPool.Instance.UnSpawn(UI);
+        ObjectPool.Instance.UnSpawn (gameObject);
 	} 
 	#endregion
 
@@ -222,7 +250,8 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 		_move.OnUpdate = MoveUpdater;
 		_move.OnLeave = MoveLeave;
 
-		_rotate.OnUpdate = RotateUpdater;
+        _rotate.OnEnter = RoateOnEnter;
+        _rotate.OnUpdate = RotateUpdater;
 
 		_Scaler.OnUpdate = ScaleUpdater;
 
@@ -258,8 +287,8 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 			break;
 		}
 		_cS = cs;
-        Debug.Log("ChangeState::::::" + _cS);
 	}
+
 
 
     #endregion

@@ -277,6 +277,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 //
             // Default one of them active
 
+            //todo...
 
 			AddButton ("shuihu", Panels.Topology);
             SetActiveTab(Panels.Topology);
@@ -292,7 +293,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 			button.onClick.AddListener(() => 
 				{
 					GameObject go = ObjectPool.Instance.Spawn(text);
-					ItemPro pro = go.AddComponent<ItemPro>();
+					ItemPro pro = go.GetComponent<ItemPro>();
 					pro.cursor = cursor;
 					pro.Init();
 					pro.ChangeState(ClickState.Move);
