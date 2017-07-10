@@ -19,10 +19,10 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
     public void OnManipulationUpdated(ManipulationEventData eventData)
     {
         Vector3 temp = eventData.CumulativeDelta;
+        float xdistance = temp.x;
         if (_cS == ClickState.Rotate)
         {
-            Debug.Log(temp.x);
-        //    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + temp.x, transform.localEulerAngles.z);
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + temp.x, transform.localEulerAngles.z);
         }
     }
 
@@ -88,10 +88,12 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	#region 字段
 	private Transform UIpos;
 	private GameObject UI;
+    private GameObject RotateIcon;
     [SerializeField]
 	private ClickState _cS;
 
     private BoxCollider box;
+
 
 	public SpatialUnderstandingCursor cursor;
 	#endregion
@@ -124,6 +126,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	void Start()
 	{
         box = GetComponent<BoxCollider>();
+        RotateIcon = transform.Find("RoateIcon").gameObject;
     }
 
 	void Update()
@@ -210,12 +213,17 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
     //旋转
     void RoateOnEnter()
     {
-        
+        RotateIcon.SetActive(true);
     }
 	void RotateUpdater(float timer)
 	{
-		
+        RotateIcon.transform.Rotate(Vector3.up, timer);
 	}
+    void RoateLeave()
+    {
+        RotateIcon.SetActive(false);
+    }
+
 
 	//缩放
 	void ScaleUpdater(float timer)
