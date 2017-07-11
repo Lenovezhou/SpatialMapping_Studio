@@ -4,15 +4,31 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Examples.InteractiveElements;
 
-public enum UItype
-{
-    Decorate,furniture,Decoration
-}
+
 
 
 public class ModelsUI : LineDrawer
 {
+	
+	#region 类型
+	public enum UItype
+	{
+		Decorate,Furniture,Decoration,panel_count
+	}
+
+	[Serializable]
+	public class TapPanels
+	{
+		public Interactive button;
+		public SpriteRenderer maskgrund;
+		public SpriteRenderer backgrund;
+		public Transform grid;
+		public List<Transform> gridbuttons = new List<Transform>();
+	}
+	#endregion
+
     #region 字段
     private bool placedMenuNeedsBillboard = false;
 
@@ -24,18 +40,23 @@ public class ModelsUI : LineDrawer
     public const float MenuHeight = 1.0f;
     public const float MenuMinDepth = 2.0f;
 
+	public TapPanels[] panels = new TapPanels[(int)UItype.panel_count];
+
     //ui的父节点
     public Transform ParentPanel;
 
     //摆放Resource出来的模型的地方
     public Transform GridPanel;
 
+
+	public SpatialUnderstandingCursor cursor;
+
     #endregion
 
     #region Unity回调
     private void Start()
     {
-        InitializedEdge();
+      //  InitializedEdge();
         // Turn menu off until we're placed
         ParentPanel.gameObject.SetActive(false);
 
@@ -96,7 +117,7 @@ public class ModelsUI : LineDrawer
     #region 事件
     private void OnScanStateChanged()
     {
-        Debug.Log("<><><><>OnScanStateChanged<><><>--------"  + SpatialUnderstanding.Instance.ScanState.ToString());
+//        Debug.Log("<><><><>OnScanStateChanged<><><>--------"  + SpatialUnderstanding.Instance.ScanState.ToString());
         // If we are leaving the None state, go ahead and register shapes now
         if ((SpatialUnderstanding.Instance.ScanState == SpatialUnderstanding.ScanStates.Done) &&
             SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
@@ -124,7 +145,7 @@ public class ModelsUI : LineDrawer
         SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition placeOnWallDef =
             SpatialUnderstandingDllObjectPlacement.ObjectPlacementDefinition.Create_OnWall(new Vector3(MenuWidth * 0.5f, MenuHeight * 0.5f, MenuMinDepth * 0.5f), 0.5f, 3.0f);
         SpatialUnderstandingDllObjectPlacement.ObjectPlacementResult placementResult = SpatialUnderstanding.Instance.UnderstandingDLL.GetStaticObjectPlacementResult();
-        Debug.Log("<color=yellow>IEnumerator SetupMenu()----------->>>>></color>");
+//        Debug.Log("<color=yellow>IEnumerator SetupMenu()----------->>>>></color>");
         var thread =
 #if UNITY_EDITOR || !UNITY_WSA
                 new System.Threading.Thread
@@ -195,7 +216,7 @@ public class ModelsUI : LineDrawer
 
     private void PlaceMenu(Vector3 position, Vector3 normal, bool needsBillboarding = false)
     {
-        Debug.Log("<color=red>执行多少次？？？？？？</color>");
+//        Debug.Log("<color=red>执行多少次？？？？？？</color>");
         // Offset in a bit
         position -= normal * 0.05f;
         Quaternion rotation = Quaternion.LookRotation(normal, Vector3.up);
@@ -230,16 +251,34 @@ public class ModelsUI : LineDrawer
 
     }
 
-    private void InitializedEdge()
-    {
-        Vector3[] poses = new Vector3[4];
-        RectTransform rect = GridPanel.transform as RectTransform;
-        rect.GetWorldCorners(poses);
-        for (int i = 0; i < poses.Length; i++)
-        {
-            Debug.Log(poses[i]);
-        }
-    }
+	private void AddButton(string text, UItype panel)
+	{
+		GameObject button = ObjectPool.Instance.Spawn (text);
+		button.transform.SetParent(panels[(int)panel].grid, false);
+		button.transform.localScale = Vector3.one *  0.5f;
+
+		int index = button.transform.GetSiblingIndex ();
+
+		//button.transform.localPosition = 
+		button.GetComponent<Interactive>().OnDownEvent.AddListener(() => 
+			{
+				GameObject go = ObjectPool.Instance.Spawn(text);
+				go.GetComponentInChildren<MeshRenderer>().material.color = new Color(UnityEngine.Random.Range(0,1),UnityEngine.Random.Range(0,1),UnityEngine.Random.Range(0,1));
+				ItemPro pro = go.GetComponent<ItemPro>();
+				pro.cursor = cursor;
+				pro.Init();
+				pro.ChangeState(ClickState.Move);
+				go.transform.position = Camera.main.transform.forward * 2 ;
+			});
+		panels [(int)panel].gridbuttons.Add (button.transform);
+	}
+
+
+	void SetParentinit()
+	{
+		
+	}
+
 
     #endregion
 
