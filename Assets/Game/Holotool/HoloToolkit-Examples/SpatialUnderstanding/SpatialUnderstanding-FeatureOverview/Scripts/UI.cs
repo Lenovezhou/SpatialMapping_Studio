@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         // Enums
         public enum Panels
         {
-            Topology,
+            Decorate,
             Shapes,
             LevelSolver,
             PANEL_COUNT
@@ -238,49 +238,62 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 
         private void SetupMenus()
         {
-//            // Topology queries
-//            ButtonPanels[(int)Panels.Topology].Button.GetComponentInChildren<Text>().text = "Topology Queries";
-//            ButtonPanels[(int)Panels.Topology].Button.onClick.AddListener(() => { SetActiveTab(Panels.Topology); });
-//            AddButton("Position on wall", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionOnWall(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("Large positions on wall", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargePositionsOnWalls(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("Largest wall", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargeWall(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("Positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("Large positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargestPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("Place objects positions", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsPlaceable(); timeLastQuery = DateTime.MinValue; });
-//
-//            // Shape queries
-//            ButtonPanels[(int)Panels.Shapes].Button.GetComponentInChildren<Text>().text = "Shape Queries";
-//            ButtonPanels[(int)Panels.Shapes].Button.onClick.AddListener(() => { SetActiveTab(Panels.Shapes); });
-//            ReadOnlyCollection<string> customShapes = ShapeDefinition.Instance.CustomShapeDefinitions;
-//            for (int i = 0; i < customShapes.Count; ++i)
-//            {
-//                string shapeName = customShapes[i];
-//                AddButton(shapeName, Panels.Shapes, () =>
-//                {
-//                    SpaceVisualizer.Instance.Query_Shape_FindShapeHalfDims(shapeName);
-//                    timeLastQuery = DateTime.MinValue;
-//                });
-//            }
-//
-//            // Level solver
-//            ButtonPanels[(int)Panels.LevelSolver].Button.GetComponentInChildren<Text>().text = "Object Placement";
-//            ButtonPanels[(int)Panels.LevelSolver].Button.onClick.AddListener(() => { SetActiveTab(Panels.LevelSolver); timeLastQuery = DateTime.MinValue; });
-//            AddButton("On Floor", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("On Wall", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnWall(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("On Ceiling", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnCeiling(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("On SurfaceEdge", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnEdge(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("On FloorAndCeiling", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloorAndCeiling(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("RandomInAir AwayFromMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_RandomInAir_AwayFromMe(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("OnEdge NearCenter", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnEdge_NearCenter(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("OnFloor AwayFromMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_AwayFromMe(); timeLastQuery = DateTime.MinValue; });
-//            AddButton("OnFloor NearMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_NearMe(); timeLastQuery = DateTime.MinValue; });
-//
+            //            // Topology queries
+            //            ButtonPanels[(int)Panels.Topology].Button.GetComponentInChildren<Text>().text = "Topology Queries";
+            //            ButtonPanels[(int)Panels.Topology].Button.onClick.AddListener(() => { SetActiveTab(Panels.Topology); });
+            //            AddButton("Position on wall", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionOnWall(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("Large positions on wall", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargePositionsOnWalls(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("Largest wall", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargeWall(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("Positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("Large positions on floor", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindLargestPositionsOnFloor(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("Place objects positions", Panels.Topology, () => { SpaceVisualizer.Instance.Query_Topology_FindPositionsPlaceable(); timeLastQuery = DateTime.MinValue; });
+            //
+            //            // Shape queries
+            //            ButtonPanels[(int)Panels.Shapes].Button.GetComponentInChildren<Text>().text = "Shape Queries";
+            //            ButtonPanels[(int)Panels.Shapes].Button.onClick.AddListener(() => { SetActiveTab(Panels.Shapes); });
+            //            ReadOnlyCollection<string> customShapes = ShapeDefinition.Instance.CustomShapeDefinitions;
+            //            for (int i = 0; i < customShapes.Count; ++i)
+            //            {
+            //                string shapeName = customShapes[i];
+            //                AddButton(shapeName, Panels.Shapes, () =>
+            //                {
+            //                    SpaceVisualizer.Instance.Query_Shape_FindShapeHalfDims(shapeName);
+            //                    timeLastQuery = DateTime.MinValue;
+            //                });
+            //            }
+            //
+            //            // Level solver
+            //            ButtonPanels[(int)Panels.LevelSolver].Button.GetComponentInChildren<Text>().text = "Object Placement";
+            //            ButtonPanels[(int)Panels.LevelSolver].Button.onClick.AddListener(() => { SetActiveTab(Panels.LevelSolver); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("On Floor", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("On Wall", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnWall(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("On Ceiling", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnCeiling(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("On SurfaceEdge", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnEdge(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("On FloorAndCeiling", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloorAndCeiling(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("RandomInAir AwayFromMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_RandomInAir_AwayFromMe(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("OnEdge NearCenter", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnEdge_NearCenter(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("OnFloor AwayFromMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_AwayFromMe(); timeLastQuery = DateTime.MinValue; });
+            //            AddButton("OnFloor NearMe", Panels.LevelSolver, () => { LevelSolver.Instance.Query_OnFloor_NearMe(); timeLastQuery = DateTime.MinValue; });
+            //
             // Default one of them active
 
             //todo...
+            ButtonPanels[(int)Panels.Decorate].Button.GetComponentInChildren<Text>().text = "Decorate";
+            ButtonPanels[(int)Panels.Decorate].Button.onClick.AddListener(() => { SetActiveTab(Panels.Decorate); });
+            AddButton("TeaSet", Panels.Decorate);
 
-			AddButton ("shuihu", Panels.Topology);
-            SetActiveTab(Panels.Topology);
+
+            ButtonPanels[(int)Panels.Shapes].Button.GetComponentInChildren<Text>().text = "家具";
+            ButtonPanels[(int)Panels.Shapes].Button.onClick.AddListener(() => { SetActiveTab(Panels.Decorate); });
+           // AddButton("")
+
+
+            ButtonPanels[(int)Panels.LevelSolver].Button.GetComponentInChildren<Text>().text = "物件";
+            ButtonPanels[(int)Panels.LevelSolver].Button.onClick.AddListener(() => { SetActiveTab(Panels.Decorate); });
+
+
+           
+            SetActiveTab(Panels.Decorate);
         }
 
         private void AddButton(string text, Panels panel)
@@ -293,6 +306,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
 			button.onClick.AddListener(() => 
 				{
 					GameObject go = ObjectPool.Instance.Spawn(text);
+                    go.GetComponentInChildren<MeshRenderer>().material.color = new Color(UnityEngine.Random.Range(0,1),UnityEngine.Random.Range(0,1),UnityEngine.Random.Range(0,1));
 					ItemPro pro = go.GetComponent<ItemPro>();
 					pro.cursor = cursor;
 					pro.Init();

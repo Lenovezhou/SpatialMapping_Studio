@@ -185,9 +185,11 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	//打开UI
 	void OpenUIEnter()
 	{
+        if (UI == null)
+        {
+            UI = ObjectPool.Instance.Spawn("ItemUI");
+        }
 
-        UI = ObjectPool.Instance.Spawn("ItemUI");
- 
         box.enabled = false;
 
         Transform pos = transform.Find ("UIPos");
