@@ -20,10 +20,42 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
     {
         Vector3 temp = eventData.CumulativeDelta;
         float xdistance = temp.x;
-        if (_cS == ClickState.Rotate)
-        {
-            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + temp.x, transform.localEulerAngles.z);
-        }
+		float ydistance = temp.y;
+		Vector3 localeulerangles = transform.localEulerAngles;
+		Vector3 localscale = transform.localScale;
+		switch (_cS) 
+		{
+		case ClickState.Rotate:
+			transform.localEulerAngles = new Vector3(localeulerangles.x, localeulerangles.y + temp.x * 2, localeulerangles.z);
+			break;
+		case ClickState.Scale:
+			if (localscale.x < 2 && localscale.x > 0.5f) 
+			{
+				if (ScaleIcon.GetComponent<SpriteRenderer>().color != Color.green)
+				{
+					ScaleIcon.GetComponent<SpriteRenderer> ().color = Color.green;
+				}
+				transform.localScale = new Vector3 (localscale.x + ydistance, localscale.y + ydistance, localscale.z + ydistance);
+			}
+			else if(localscale.x > 2)
+			{
+				if (temp.y < 0) {
+					transform.localScale = new Vector3 (localscale.x + ydistance, localscale.y + ydistance, localscale.z + ydistance);
+				} else {
+					LerpColor (Time.time);
+				}
+			}else if(localscale.x < 0.5f)
+			{
+				if (temp.y > 0) {
+					transform.localScale = new Vector3 (localscale.x + ydistance, localscale.y + ydistance, localscale.z + ydistance);
+				} else {
+					LerpColor (Time.time);
+				}
+			}
+			break;
+		default:
+			break;
+		}
     }
 
     public void OnManipulationCompleted(ManipulationEventData eventData)
@@ -52,6 +84,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 
     public void OnInputClicked (InputClickedEventData eventData)
 	{
+		
         if (_cS == ClickState.Ido || _cS == ClickState.CloseUI)
         {
             ChangeState(ClickState.OpenUI);
@@ -89,6 +122,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	private Transform UIpos;
 	private GameObject UI;
     private GameObject RotateIcon;
+	private GameObject ScaleIcon;
     [SerializeField]
 	private ClickState _cS;
 
@@ -127,6 +161,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 	{
         box = GetComponent<BoxCollider>();
         RotateIcon = transform.Find("RoateIcon").gameObject;
+		ScaleIcon = transform.Find ("ScaleIcon").gameObject;
     }
 
 	void Update()
@@ -217,7 +252,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
     }
 	void RotateUpdater(float timer)
 	{
-        RotateIcon.transform.Rotate(Vector3.up, timer);
+		RotateIcon.transform.Rotate(Vector3.back, timer * 5);
 	}
     void RoateLeave()
     {
@@ -226,9 +261,17 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 
 
 	//缩放
+	void ScaleEnter()
+	{
+		ScaleIcon.SetActive (true);
+	}
 	void ScaleUpdater(float timer)
 	{
 		
+	}
+	void ScaleLeave()
+	{
+		ScaleIcon.SetActive (false);
 	}
 
 	//删除
@@ -260,8 +303,11 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 
         _rotate.OnEnter = RoateOnEnter;
         _rotate.OnUpdate = RotateUpdater;
+		_rotate.OnLeave = RoateLeave;
 
+		_Scaler.OnEnter = ScaleEnter;
 		_Scaler.OnUpdate = ScaleUpdater;
+		_Scaler.OnLeave = ScaleLeave;
 
 		_delete.OnEnter = DeleteEnter;
 
@@ -297,7 +343,12 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
 		_cS = cs;
 	}
 
-
+	private void LerpColor(float t)
+	{
+		float d = t % 1;
+		Color c = new Color (1 - d, d, 0);
+		ScaleIcon.GetComponent<SpriteRenderer> ().color = c;
+	}
 
     #endregion
 
