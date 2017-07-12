@@ -1,0 +1,139 @@
+fileFormatVersion: 2
+guid: 012bc294ccd6c3046bc9ff7cc70a211e
+timeCreated: 1459582459
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: cgaxis_plants_14_004
+    100002: Group001
+    100004: Group002
+    100006: Group003
+    100008: Group004
+    100010: Object
+    100012: Object002
+    100014: Object004
+    100016: Object008
+    100018: Object009
+    100020: Object010
+    100022: Object011
+    100024: Object012
+    100026: Object013
+    100028: Object014
+    100030: //RootNode
+    400000: cgaxis_plants_14_004
+    400002: Group001
+    400004: Group002
+    400006: Group003
+    400008: Group004
+    400010: Object
+    400012: Object002
+    400014: Object004
+    400016: Object008
+    400018: Object009
+    400020: Object010
+    400022: Object011
+    400024: Object012
+    400026: Object013
+    400028: Object014
+    400030: //RootNode
+    2300000: cgaxis_plants_14_004
+    2300002: Object
+    2300004: Object002
+    2300006: Object004
+    2300008: Object008
+    2300010: Object009
+    2300012: Object010
+    2300014: Object011
+    2300016: Object012
+    2300018: Object013
+    2300020: Object014
+    2300022: //RootNode
+    3300000: cgaxis_plants_14_004
+    3300002: Object
+    3300004: Object002
+    3300006: Object004
+    3300008: Object008
+    3300010: Object009
+    3300012: Object010
+    3300014: Object011
+    3300016: Object012
+    3300018: Object013
+    3300020: Object014
+    3300022: //RootNode
+    4300000: cgaxis_plants_14_004
+    4300002: Object004
+    4300004: Object008
+    4300006: Object002
+    4300008: Object
+    4300010: Object009
+    4300012: Object010
+    4300014: Object011
+    4300016: Object012
+    4300018: Object013
+    4300020: Object014
+    4300022: Orchid
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

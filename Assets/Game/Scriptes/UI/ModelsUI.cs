@@ -15,7 +15,10 @@ public class ModelsUI : LineDrawer
 	#region 类型
 	public enum UItype
 	{
-		Decorate,Furniture,Decoration,panel_count
+		Decorate,   //装饰
+        Furniture,  //家具
+        Decoration, //物件
+        panel_count
 	}
 
 	[Serializable]
@@ -27,9 +30,12 @@ public class ModelsUI : LineDrawer
 		public Transform grid;
 		public List<Transform> gridbuttons = new List<Transform>();
 	}
-	#endregion
+    #endregion
 
     #region 字段
+
+    private int lastpanel = -1;
+
     private bool placedMenuNeedsBillboard = false;
 
     public bool HasPlacedMenu { get; private set; }
@@ -56,7 +62,9 @@ public class ModelsUI : LineDrawer
     #region Unity回调
     private void Start()
     {
-      //  InitializedEdge();
+        // Setup the menu
+            SetupMenus();
+        //  InitializedEdge();
         // Turn menu off until we're placed
         ParentPanel.gameObject.SetActive(false);
 
@@ -225,8 +233,7 @@ public class ModelsUI : LineDrawer
         transform.position = position;
         transform.rotation = rotation;
 
-        // Setup the menu
-        SetupMenus();
+        
 
         // Enable it
         ParentPanel.gameObject.SetActive(true);
@@ -248,8 +255,40 @@ public class ModelsUI : LineDrawer
     private void SetupMenus()
     {
 
+        //选择按钮添加事件监听
+        panels[(int)UItype.Decorate].button.OnDownEvent.AddListener(()=> { SetPanelInteractive(UItype.Decorate); });
+        panels[(int)UItype.Decoration].button.OnDownEvent.AddListener(() => { SetPanelInteractive(UItype.Decoration); });
+        panels[(int)UItype.Furniture].button.OnDownEvent.AddListener(() => { SetPanelInteractive(UItype.Furniture); });
 
+
+
+        //三个界面的子物体添加交互
+        for (int i = 0; i <(int)UItype.panel_count; i++)
+        {
+            panels[i].button.gameObject.AddComponent<MainChoiseBut>();
+            Transform trans = panels[i].grid;
+            int count = trans.childCount;
+            for (int j = 0; j < count; j++)
+            {
+                UIItems item = trans.GetChild(j).gameObject.AddComponent<UIItems>();
+                item.Init(cursor);
+            }
+        }
+
+        //默认打开家具
+        SetPanelInteractive(UItype.Furniture);
     }
+
+    private void SetPanelInteractive(UItype panel)
+    {
+        if (lastpanel >= 0)
+        {
+            panels[lastpanel].grid.gameObject.SetActive(false);
+        }
+        panels[(int)panel].grid.gameObject.SetActive(true);
+        lastpanel = (int)panel;
+    }
+
 
 	private void AddButton(string text, UItype panel)
 	{
@@ -272,14 +311,6 @@ public class ModelsUI : LineDrawer
 			});
 		panels [(int)panel].gridbuttons.Add (button.transform);
 	}
-
-
-	void SetParentinit()
-	{
-		
-	}
-
-
     #endregion
 
 }

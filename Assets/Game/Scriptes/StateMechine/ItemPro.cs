@@ -8,7 +8,7 @@ public enum ClickState
 	Ido,Move,Rotate,Scale,Delet,OpenUI,CloseUI
 }
 
-public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandler,IManipulationHandler
+public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulationHandler
 {
 
     #region ImanipulationHandler实现
@@ -69,18 +69,6 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IInputHandl
     #endregion
 
     #region IInputClickHandler 实现
-
-    public void OnInputUp(InputEventData eventData)
-    {
-    //    Debug.Log("OnInputUp:::::::");
-    }
-
-    public void OnInputDown(InputEventData eventData)
-    {
-    //    Debug.Log("OnInputDown:::::::");
-    }
-
-
 
     public void OnInputClicked (InputClickedEventData eventData)
 	{
