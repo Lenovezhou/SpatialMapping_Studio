@@ -1,2 +1,0 @@
-MainPackage=E:\Unity_Projects\SpatialMapping_Studio\App\SpatialMapping\bin\x86\Release\SpatialMapping_1.0.0.0_x86.appx
-SymbolPackage=E:\Unity_Projects\SpatialMapping_Studio\App\SpatialMapping\AppPackages\SpatialMapping_1.0.0.0_Test\SpatialMapping_1.0.0.0_x86.appxsym
