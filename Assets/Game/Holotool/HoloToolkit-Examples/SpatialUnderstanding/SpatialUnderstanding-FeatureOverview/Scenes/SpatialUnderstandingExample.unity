@@ -6233,7 +6233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966a94116394c534a8e5d1bedbf8bc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceDir: 
+  ResourceDir: Sound
 --- !u!1001 &1599217328
 Prefab:
   m_ObjectHideFlags: 0

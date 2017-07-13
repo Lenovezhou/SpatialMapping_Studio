@@ -17,6 +17,7 @@ public class Sound : Singleton<Sound>
         m_BGaudio.playOnAwake = false;
 
         m_Effectaudio = this.gameObject.AddComponent<AudioSource>();
+        m_Effectaudio.spatialize = true;
         m_Effectaudio.loop = false;
         m_Effectaudio.playOnAwake = false;
     }
