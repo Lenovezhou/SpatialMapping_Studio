@@ -2,16 +2,19 @@
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Examples.SpatialUnderstandingFeatureOverview;
+using HoloToolkit.Unity;
 
 public enum ClickState
 {
 	Ido,Move,Rotate,Scale,Delet,OpenUI,CloseUI
 }
 
+
+///点击按钮实例出来的obj所挂脚本
 public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulationHandler
 {
 
-    #region ImanipulationHandler实现
+    #region ImanipulationHandler实现(旋转和缩放)
     public void OnManipulationStarted(ManipulationEventData eventData)
     {
     }
@@ -26,10 +29,10 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 		switch (_cS) 
 		{
 		case ClickState.Rotate:
-			transform.localEulerAngles = new Vector3(localeulerangles.x, localeulerangles.y + temp.x * 2, localeulerangles.z);
+			transform.localEulerAngles = new Vector3(localeulerangles.x, localeulerangles.y - temp.x * 2, localeulerangles.z);
 			break;
 		case ClickState.Scale:
-			if (localscale.x < 2 && localscale.x > 0.5f) 
+			if (localscale.x < scaler_max && localscale.x > scaler_min) 
 			{
 				if (ScaleIcon.GetComponent<SpriteRenderer>().color != Color.green)
 				{
@@ -37,14 +40,14 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 				}
 				transform.localScale = new Vector3 (localscale.x + ydistance, localscale.y + ydistance, localscale.z + ydistance);
 			}
-			else if(localscale.x > 2)
+			else if(localscale.x > scaler_max)
 			{
 				if (temp.y < 0) {
 					transform.localScale = new Vector3 (localscale.x + ydistance, localscale.y + ydistance, localscale.z + ydistance);
 				} else {
 					LerpColor (Time.time);
 				}
-			}else if(localscale.x < 0.5f)
+			}else if(localscale.x < scaler_min)
 			{
 				if (temp.y > 0) {
 					transform.localScale = new Vector3 (localscale.x + ydistance, localscale.y + ydistance, localscale.z + ydistance);
@@ -72,19 +75,25 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
     public void OnInputClicked (InputClickedEventData eventData)
 	{
-		
-        if (_cS == ClickState.Ido || _cS == ClickState.CloseUI)
+        Debug.Log("点击到么了，，，，，上个状态为：：：：：：：" + _cS.ToString() );
+        switch (_cS)
         {
-            ChangeState(ClickState.OpenUI);
+            case ClickState.Ido:
+            case ClickState.CloseUI:
+                ChangeState(ClickState.OpenUI);
+                break;
+            case ClickState.Scale:
+            case ClickState.Rotate:
+                ChangeState(ClickState.Ido);
+                break;
+            case ClickState.Move:
+            case ClickState.OpenUI:
+                ChangeState(ClickState.CloseUI);
+                break;            
+            default:
+                break;
         }
-        else if (_cS == ClickState.OpenUI)
-        {
-            ChangeState(ClickState.CloseUI);
-        }
-        else
-        {
-            ChangeState(ClickState.Ido);
-        }
+
 
 	}
 
@@ -95,7 +104,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 	public void OnFocusEnter ()
 	{
-	//	STATE = _focused;
+	    
 	}
 
 	public void OnFocusExit ()
@@ -103,21 +112,39 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 	}
 
-	#endregion
+    #endregion
 
 
-	#region 字段
-	private Transform UIpos;
+    #region 字段
+
+    //自身放大缩小极限
+    private float scaler_max;
+    private float scaler_min;
+    
+
+    //放UI的地方
+    private Transform UIpos;
+
+    //操作自身的UI
 	private GameObject UI;
+
+    //旋转图标
     private GameObject RotateIcon;
+
+    //缩放图标
 	private GameObject ScaleIcon;
+
+
+    //点击button改变状态
     [SerializeField]
 	private ClickState _cS;
 
+    //自身带boxcollider
     private BoxCollider box;
 
-
+    //Foucus光标
 	public SpatialUnderstandingCursor cursor;
+
 	#endregion
 
 
@@ -150,6 +177,12 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
         box = GetComponent<BoxCollider>();
         RotateIcon = transform.Find("RoateIcon").gameObject;
 		ScaleIcon = transform.Find ("ScaleIcon").gameObject;
+
+        scaler_max = transform.localScale.x * 2;
+        scaler_min = transform.localScale.y / 2;
+
+        ScaleIcon.AddComponent<Billboard>();
+
     }
 
 	void Update()
@@ -178,7 +211,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
             UI = ObjectPool.Instance.Spawn("ItemUI");
         }
 
-        box.enabled = false;
+      //  box.enabled = false;
 
         Transform pos = transform.Find ("UIPos");
 		UI.transform.SetParent (pos.transform);
@@ -200,7 +233,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 	}
     void OpenUILeave()
     {
-        box.enabled = true;
+      //  box.enabled = true;
     }
 
 
@@ -210,14 +243,17 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
     }
 	void CloseUIUpdater(float timer)
 	{
-        float temp = statetimer;
-        if (temp <= 1)
+        if (UI != null)
         {
-            UI.transform.localScale = new Vector3(1 - temp, 1 - temp, 1 - temp);
-        }
-        else if (UI.transform.localScale != Vector3.zero)
-        {
-            UI.transform.localScale = Vector3.zero;
+            float temp = statetimer;
+            if (temp <= 1)
+            {
+                UI.transform.localScale = new Vector3(1 - temp, 1 - temp, 1 - temp);
+            }
+            else if (UI.transform.localScale != Vector3.zero)
+            {
+                UI.transform.localScale = Vector3.zero;
+            }
         }
     }
 
@@ -264,6 +300,27 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 		ScaleIcon.SetActive (false);
 	}
 
+    //空闲状态
+    void IdoEnter() { }
+    void IdoUpdater(float timer)
+    {
+        if (UI != null)
+        {
+            float temp = statetimer;
+            if (temp <= 1)
+            {
+                UI.transform.localScale = new Vector3(1 - temp, 1 - temp, 1 - temp);
+            }
+            else if (UI.transform.localScale != Vector3.zero)
+            {
+                UI.transform.localScale = Vector3.zero;
+            }
+        }
+        
+    }
+    void IdoLeave() { }
+
+
 	//删除
 	void DeleteEnter()
 	{
@@ -298,6 +355,10 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 		_Scaler.OnEnter = ScaleEnter;
 		_Scaler.OnUpdate = ScaleUpdater;
 		_Scaler.OnLeave = ScaleLeave;
+
+        _ido.OnEnter = IdoEnter;
+        _ido.OnUpdate = IdoUpdater;
+        _ido.OnLeave = IdoLeave;
 
 		_delete.OnEnter = DeleteEnter;
 

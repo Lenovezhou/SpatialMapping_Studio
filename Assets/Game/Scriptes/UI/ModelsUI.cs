@@ -57,6 +57,13 @@ public class ModelsUI : LineDrawer
 
 	public SpatialUnderstandingCursor cursor;
 
+
+    //操作提示的3Dtext
+    public TextMesh text1, text2;
+
+    //扫描产生的mesh
+    public Transform mapping;
+
     #endregion
 
     #region Unity回调
@@ -138,6 +145,7 @@ public class ModelsUI : LineDrawer
 
             // Setup the menu
             StartCoroutine(SetupMenu());
+            CleanmeshAndText();
         }
     }
     #endregion
@@ -311,6 +319,17 @@ public class ModelsUI : LineDrawer
 			});
 		panels [(int)panel].gridbuttons.Add (button.transform);
 	}
+
+    private void CleanmeshAndText()
+    {
+        text1.gameObject.SetActive(false);
+        text2.gameObject.SetActive(false);
+        //for (int i = 0; i < mapping.childCount; i++)
+        //{
+        //    mapping.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
+        //}
+    }
+
     #endregion
 
 }

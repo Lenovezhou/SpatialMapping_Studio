@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Examples.InteractiveElements;
 
+/// <summary>
+/// 实例出的obj自带UI
+/// </summary>
 public class UIManager : MonoBehaviour {
 
 	#region 字段
@@ -39,7 +42,6 @@ public class UIManager : MonoBehaviour {
 
 	void Start () 
 	{
-		
 	}
 
 

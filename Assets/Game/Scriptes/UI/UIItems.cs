@@ -10,8 +10,6 @@ using HoloToolkit.Examples.SpatialUnderstandingFeatureOverview;
 /// </summary>
 public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
 {
-
-
     #region 字段
 
     State onfocus = new State();
@@ -27,7 +25,6 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
 
 
     #endregion
-
 
     #region 接口实现
     public void OnFocusEnter()
@@ -45,17 +42,15 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     public void OnInputClicked(InputClickedEventData eventData)
     {
         GameObject go = ObjectPool.Instance.Spawn(gameObject.name);
-        Debug.Log("name========" + gameObject.name);
+    //    Debug.Log("name========" + gameObject.name);
     //    go.GetComponentInChildren<MeshRenderer>().material.color = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
         ItemPro pro = go.GetComponent<ItemPro>();
         pro.cursor = cursor;
         pro.Init();
         pro.ChangeState(ClickState.Move);
         go.transform.position = Camera.main.transform.forward * 2;
-
     }
     #endregion
-
 
     #region Unity回调
     void Start()

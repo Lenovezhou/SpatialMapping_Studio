@@ -513,7 +513,7 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: SpatialMapping
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: E:\Unity_Projects\SpatialMapping_Studio\Assets\WSATestCertificate.pfx
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany

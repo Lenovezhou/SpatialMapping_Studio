@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 头部选择按钮所挂
+/// </summary>
 public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
 {
 

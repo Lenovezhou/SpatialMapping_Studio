@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3372866}
   - component: {fileID: 2373868}
   - component: {fileID: 114264189783372712}
+  - component: {fileID: 65161200387721116}
   m_Layer: 0
   m_Name: Pothos
   m_TagString: Untagged
@@ -25,8 +26,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 196678}
   m_LocalRotation: {x: -0.7069606, y: 0, z: 0, w: 0.707253}
-  m_LocalPosition: {x: 2.1749997, y: 0.14400002, z: 1.005}
-  m_LocalScale: {x: 1.2300402, y: 1.2300408, z: 1.2300409}
+  m_LocalPosition: {x: -1.432, y: 0, z: 0}
+  m_LocalScale: {x: 0.5706809, y: 0.5706812, z: 0.5706813}
   m_Children:
   - {fileID: 4427542286010282}
   - {fileID: 4238706446361212}
@@ -140,8 +141,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1595772448955036}
   m_LocalRotation: {x: 1, y: -0, z: -0, w: 0.00020673868}
-  m_LocalPosition: {x: 0.034145467, y: 0.8218473, z: -0.18569951}
-  m_LocalScale: {x: 0.087143496, y: 0.08714355, z: 0.08714354}
+  m_LocalPosition: {x: 0, y: 0, z: 0.28}
+  m_LocalScale: {x: 0.22137874, y: 0.221379, z: 0.22137897}
   m_Children: []
   m_Father: {fileID: 422762}
   m_RootOrder: 1
@@ -153,8 +154,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1400943838456884}
   m_LocalRotation: {x: 0.7069606, y: -0, z: -0, w: 0.707253}
-  m_LocalPosition: {x: -0.105, y: 0.126, z: 0.774}
-  m_LocalScale: {x: 0.8129816, y: 0.8129812, z: 0.81298125}
+  m_LocalPosition: {x: 0.019, y: 0.126, z: 0.696}
+  m_LocalScale: {x: 2.8396204, y: 2.8396204, z: 2.8396206}
   m_Children: []
   m_Father: {fileID: 422762}
   m_RootOrder: 2
@@ -166,12 +167,24 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1127871702274282}
   m_LocalRotation: {x: 0.7069606, y: -0, z: -0, w: 0.707253}
-  m_LocalPosition: {x: 0.018698772, y: 0.82186145, z: -0.15155426}
-  m_LocalScale: {x: 0.04547819, y: 0.04547817, z: 0.04547817}
+  m_LocalPosition: {x: 0, y: 0, z: 0.28}
+  m_LocalScale: {x: 0.11553248, y: 0.115532495, z: 0.115532495}
   m_Children: []
   m_Father: {fileID: 422762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65161200387721116
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196678}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.51825535, y: 0.57634157, z: 0.6362722}
+  m_Center: {x: 0.017646894, y: 0.0038429354, z: 0.1}
 --- !u!114 &114264189783372712
 MonoBehaviour:
   m_ObjectHideFlags: 1
