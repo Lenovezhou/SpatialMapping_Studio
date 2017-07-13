@@ -76,6 +76,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
     public void OnInputClicked (InputClickedEventData eventData)
 	{
         Debug.Log("点击到么了，，，，，上个状态为：：：：：：：" + _cS.ToString() );
+        Sound.Instance.PlayerEffect("DropDown");
         switch (_cS)
         {
             case ClickState.Ido:
@@ -104,7 +105,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 	public void OnFocusEnter ()
 	{
-	    
+        Sound.Instance.PlayerEffect("Focus");
 	}
 
 	public void OnFocusExit ()

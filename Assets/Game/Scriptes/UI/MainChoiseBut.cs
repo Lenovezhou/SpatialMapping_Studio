@@ -33,6 +33,7 @@ public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
     #region 接口实现
     public void OnFocusEnter()
     {
+        Sound.Instance.PlayerEffect("Focus");
         STATE = onfocus;
      //   Debug.Log("OnFocusEnter");
     }
@@ -45,6 +46,7 @@ public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
+        Sound.Instance.PlayerEffect("MainChoise");
     }
     #endregion
 

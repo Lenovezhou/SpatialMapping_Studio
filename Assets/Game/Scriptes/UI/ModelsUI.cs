@@ -146,6 +146,7 @@ public class ModelsUI : LineDrawer
             // Setup the menu
             StartCoroutine(SetupMenu());
             CleanmeshAndText();
+            Sound.Instance.PlayerEffect("PlaceMenu");
         }
     }
     #endregion
