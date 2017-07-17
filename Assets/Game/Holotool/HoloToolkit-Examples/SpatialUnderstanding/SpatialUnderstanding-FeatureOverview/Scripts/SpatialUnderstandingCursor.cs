@@ -145,7 +145,10 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             // Base
             base.LateUpdate();
 
-           
+            if (target != null)
+            {
+                target.transform.position = transform.position + Camera.main.transform.right * 0.05f;
+            }
             // Basic checks
             if ((SpatialUnderstanding.Instance == null) ||
                 ((SpatialUnderstanding.Instance.ScanState != SpatialUnderstanding.ScanStates.Scanning) &&
@@ -166,10 +169,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 (rayCastResult.SurfaceType != SpatialUnderstandingDll.Imports.RaycastResult.SurfaceTypes.Invalid)
                 )
             {
-				if (target != null) 
-				{
-					target.transform.position = transform.position + Camera.main.transform.right * 0.05f;
-				}
+				
 
           		////		Cursor 设置提示
             //    CursorText.gameObject.SetActive(true);

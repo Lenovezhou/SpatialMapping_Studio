@@ -90,7 +90,7 @@ public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
     #region 状态机方法
     void FocusEnter()
     {
-
+    //    InputManager.Instance.OverrideFocusedObject = gameObject;
     }
     void FocusUpdater(float timer)
     {
@@ -100,7 +100,7 @@ public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
     }
     void FocuseLeave()
     {
-
+    //    InputManager.Instance.OverrideFocusedObject = null;
     }
 
     void SelectEnter() { }
@@ -113,7 +113,7 @@ public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
         if (statetimer < 2)
         {
             Icorn.transform.localPosition = Vector3.Lerp(Icorn.transform.localPosition, originepos, timer * 2);
-            Icorn.transform.localEulerAngles = Vector3.Lerp(Icorn.transform.localEulerAngles, originrot, timer * 2);
+            Icorn.transform.localEulerAngles = Vector3.Lerp(Icorn.transform.localEulerAngles,new Vector3(Icorn.transform.localEulerAngles.x ,originrot.y,Icorn.transform.localEulerAngles.z), timer * 2);
 
             backgurund.color = Color.Lerp(backgurund.color, backgrund_old, timer * 2);
         }

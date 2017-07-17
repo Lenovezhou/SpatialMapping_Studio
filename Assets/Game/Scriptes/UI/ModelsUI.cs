@@ -5,9 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Examples.InteractiveElements;
+using UnityEngine.VR.WSA.Input;
 
-
-
+public delegate void Air_Tap_E(InteractionSourceKind source, int tapCount, Ray headRay);
 
 public class ModelsUI : LineDrawer
 {
@@ -33,7 +33,6 @@ public class ModelsUI : LineDrawer
     #endregion
 
     #region 字段
-
     private int lastpanel = -1;
 
     private bool placedMenuNeedsBillboard = false;
@@ -67,11 +66,17 @@ public class ModelsUI : LineDrawer
     //扫描产生的mesh
     public Transform mapping;
 
+
+    public GestureRecognizer recognizer;
+
+    public event Air_Tap_E airtapE;
+
     #endregion
 
     #region Unity回调
     private void Start()
     {
+        InitGasture();
 		Sound.Instance.InteractiveEffect (ispanelarrive);
         // Setup the menu
             SetupMenus();
@@ -97,6 +102,12 @@ public class ModelsUI : LineDrawer
             // We're using the animated box for the animation only
             MenuAnimatedBox.Update(Time.deltaTime);
 
+            if (!ispanelarrive)
+            {
+                ispanelarrive = true;
+                Sound.Instance.InteractiveEffect(ispanelarrive);
+            }
+
             // Billboarding
             if (MenuAnimatedBox.IsAnimationComplete &&
                 placedMenuNeedsBillboard)
@@ -106,11 +117,7 @@ public class ModelsUI : LineDrawer
                 Vector3 lookDirTarget = Camera.main.transform.position - transform.position;
                 lookDirTarget = (new Vector3(lookDirTarget.x, 0.0f, lookDirTarget.z)).normalized;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(-lookDirTarget), Time.deltaTime * 10.0f);
-				if (!ispanelarrive)
-				{
-					ispanelarrive = true;
-					Sound.Instance.InteractiveEffect (ispanelarrive);
-				}
+				
 			}
             else
             {
@@ -292,7 +299,7 @@ public class ModelsUI : LineDrawer
             {
 				
                 UIItems item = trans.GetChild(j).gameObject.AddComponent<UIItems>();
-                item.Init(cursor);
+                item.Init(cursor,this);
             }
         }
 
@@ -341,6 +348,31 @@ public class ModelsUI : LineDrawer
         //{
         //    mapping.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
         //}
+    }
+
+    private void InitGasture()
+    {
+    //    Debug.Log("初始化开始~");
+        // 创建手势识别对象
+        recognizer = new GestureRecognizer();
+        // 设置手势识别的类型
+        recognizer.SetRecognizableGestures(GestureSettings.Tap | GestureSettings.Hold | GestureSettings.DoubleTap);
+        // 添加手势识别的事件
+        recognizer.TappedEvent += Recognizer_TappedEvent;
+        //recognizer.HoldStartedEvent += Recognizer_HoldStartedEvent;
+        //recognizer.HoldCompletedEvent += Recognizer_HoldCompletedEvent;
+        //recognizer.HoldCanceledEvent += Recognizer_HoldCanceledEvent;
+        // 开启手势识别
+        recognizer.StartCapturingGestures();
+    //    Debug.Log("初始化完成~");
+    }
+
+    private void Recognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
+    {
+        if (airtapE != null)
+        {
+            airtapE(source,tapCount,headRay);
+        }
     }
 
     #endregion

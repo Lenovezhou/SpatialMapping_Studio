@@ -22,6 +22,7 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     Vector3 originrot;
 
     SpatialUnderstandingCursor cursor;
+    ModelsUI mu;
 
 	//用于focus时播放声音计时
 	float timer = 1;
@@ -39,9 +40,7 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
       #region 接口实现
     public void OnFocusEnter()
     {
-		Sound.Instance.PlayerEffect("Focus");
         STATE = onfocus;
-    //    Debug.Log("OnFocusEnter");
     }
 
     public void OnFocusExit()
@@ -62,6 +61,7 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
 			pro = go.AddComponent<ItemPro> ();
 		}
         pro.cursor = cursor;
+        pro.mu = this.mu;
         pro.Init();
         pro.ChangeState(ClickState.Move);
         go.transform.position = Camera.main.transform.forward * 2;
@@ -107,8 +107,8 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     #region 状态机方法
     void FocusEnter()
     {
-//		timer = 0;
-//		isplayedfocus = false;
+ //       InputManager.Instance.OverrideFocusedObject = gameObject;
+        Sound.Instance.PlayerEffect("Focus");
     }
     void FocusUpdater(float timer)
     {
@@ -129,7 +129,7 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     }
     void FocuseLeave()
     {
-
+ //       InputManager.Instance.OverrideFocusedObject = null;
     }
 
     void SelectEnter() { }
@@ -148,9 +148,10 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     #endregion
 
     #region 帮助方法
-    public void Init(SpatialUnderstandingCursor cursor)
+    public void Init(SpatialUnderstandingCursor cursor,ModelsUI mu)
     {
         this.cursor = cursor;
+        this.mu = mu;
     }
     #endregion
 }

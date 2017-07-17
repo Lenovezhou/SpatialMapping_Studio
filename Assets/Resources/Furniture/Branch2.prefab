@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 495026}
   - component: {fileID: 3381224}
   - component: {fileID: 2334206}
+  - component: {fileID: 65376238957672058}
   m_Layer: 5
   m_Name: Branch2
   m_TagString: Untagged
@@ -169,6 +170,18 @@ Transform:
   m_Father: {fileID: 495026}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65376238957672058
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161716}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8136796, y: 0.9965961, z: 1.4603521}
+  m_Center: {x: 0.1404853, y: -0.2414517, z: 0.6948723}
 --- !u!212 &212300925212393840
 SpriteRenderer:
   m_ObjectHideFlags: 1

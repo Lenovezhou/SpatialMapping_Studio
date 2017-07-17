@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 419212}
   - component: {fileID: 3316438}
   - component: {fileID: 2356618}
+  - component: {fileID: 65797367432079872}
   m_Layer: 5
   m_Name: Thronos
   m_TagString: Untagged
@@ -169,6 +170,18 @@ Transform:
   m_Father: {fileID: 419212}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65797367432079872
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137580}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.46, y: 0.68, z: 0.65}
+  m_Center: {x: 0.000000014901161, y: 0.000000019371507, z: 0.32499996}
 --- !u!212 &212954314661953978
 SpriteRenderer:
   m_ObjectHideFlags: 1
