@@ -22,6 +22,8 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
         public TextMesh CursorText;
         public LayerMask UILayerMask;
 
+		public bool canserchself = false;
+
 		private GameObject target;
 
 		public GameObject Target {
@@ -49,7 +51,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
                 result.Hit = true;
                 result.Position = hitPos;
                 result.Normal = hitNormal;
-
+//				Debug.Log ("子类：：：：calculate++++++" + hitPos);
                 return result;
             }
 
@@ -93,6 +95,14 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             Vector3 uiRayCastDirection = Camera.main.transform.forward;
             if (Physics.Raycast(uiRayCastOrigin, uiRayCastDirection, out hitInfo, RayCastLength, UILayerMask))
             {
+				StateMechinePro pro = hitInfo.collider.GetComponent<StateMechinePro> ();
+				BoxCollider box = hitInfo.collider as BoxCollider;
+				if (pro != null || box != null)
+				{
+					hitPos = hitInfo.point;
+					hitNormal = hitInfo.normal;
+					return true;	
+				}
                 Canvas canvas = hitInfo.collider.gameObject.GetComponent<Canvas>();
                 if (canvas != null)
                 {

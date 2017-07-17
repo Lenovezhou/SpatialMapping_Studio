@@ -180,8 +180,8 @@ namespace HoloToolkit.Unity.InputModule
             if (RaycastLayerMasks.Length == 1)
             {
                 IsGazingAtObject = Physics.Raycast(GazeOrigin, GazeNormal, out hitInfo, MaxGazeCollisionDistance, RaycastLayerMasks[0]);
-            }
-            else
+            }       
+			else
             {
                 // Raycast across all layers and prioritize
                 RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(new Ray(GazeOrigin, GazeNormal), MaxGazeCollisionDistance, -1));
@@ -190,11 +190,17 @@ namespace HoloToolkit.Unity.InputModule
                 if (IsGazingAtObject)
                 {
                     hitInfo = hit.Value;
+					Debug.Log ("Hit At Obj:::::::::" + hit.Value.collider.name  + hit.Value.point);
                 }
             }
 
             if (IsGazingAtObject)
             {
+				if (hitInfo.collider.name == "Puff(Clone)") 
+				{
+//					Debug.Log ("11111Hit At Obj:::::::::" + hitInfo.collider.name + hitInfo.point);	
+				}
+
                 HitObject = HitInfo.collider.gameObject;
                 HitPosition = HitInfo.point;
                 lastHitDistance = HitInfo.distance;

@@ -75,8 +75,8 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
     public void OnInputClicked (InputClickedEventData eventData)
 	{
-        Debug.Log("点击到么了，，，，，上个状态为：：：：：：：" + _cS.ToString() );
-        Sound.Instance.PlayerEffect("DropDown");
+//        Debug.Log("点击到么了，，，，，上个状态为：：：：：：：" + _cS.ToString() );
+      
         switch (_cS)
         {
             case ClickState.Ido:
@@ -87,10 +87,11 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
             case ClickState.Rotate:
                 ChangeState(ClickState.Ido);
                 break;
-            case ClickState.Move:
-            case ClickState.OpenUI:
-                ChangeState(ClickState.CloseUI);
-                break;            
+			case ClickState.Move:
+			case ClickState.OpenUI:
+				ChangeState (ClickState.CloseUI);
+				box.enabled = true;
+                break;             
             default:
                 break;
         }
@@ -105,7 +106,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 	public void OnFocusEnter ()
 	{
-        Sound.Instance.PlayerEffect("Focus");
+    //    Sound.Instance.PlayerEffect("Focus");
 	}
 
 	public void OnFocusExit ()
@@ -175,7 +176,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 	void Start()
 	{
-        box = GetComponent<BoxCollider>();
+      
         RotateIcon = transform.Find("RoateIcon").gameObject;
 		ScaleIcon = transform.Find ("ScaleIcon").gameObject;
 
@@ -184,12 +185,25 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
         ScaleIcon.AddComponent<Billboard>();
 
+		
     }
 
 	void Update()
 	{
 		OnUpdater (Time.deltaTime);
+
+		//测试
+		if (Input.GetMouseButtonDown(0)) {
+			OnAirTap ();
+		}
 	}
+
+	void OnDisable()
+	{
+//		Debug.Log ("Disable");
+
+	}
+
 	#endregion
 
 
@@ -262,14 +276,25 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 	void MoveEnter()
 	{
 		cursor.Target = gameObject;
+		box.enabled = false;
+		//cursor.canserchself = false;
+		//gameObject.layer = LayerMask.NameToLayer ("Default");
 	}
 	void MoveUpdater(float timer)
 	{
 	//	transform.position = Camera.main.transform.forward 
+//		if (statetimer > 0.5f && !box.enabled)
+//		{
+//			box.enabled = true;
+//		}
 	}
 	void MoveLeave()
 	{
+		box.enabled = true;
 		cursor.Target = null;
+		Sound.Instance.PlayerEffect("DropDown");
+		//cursor.canserchself = true;
+		//gameObject.layer = LayerMask.NameToLayer ("UI");
 	}
 
     //旋转
@@ -363,6 +388,12 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 		_delete.OnEnter = DeleteEnter;
 
+
+		box = GetComponent<BoxCollider> ();
+		DestroyImmediate (box);
+		box = gameObject.AddComponent<BoxCollider> ();
+		cursor.canserchself = false;
+		box.enabled = false;
 	}
 	public void ChangeState(ClickState cs)
 	{
@@ -401,6 +432,16 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 		Color c = new Color (1 - d, d, 0);
 		ScaleIcon.GetComponent<SpriteRenderer> ().color = c;
 	}
+
+	private void OnAirTap()
+	{
+		if (_cS == ClickState.Move)
+		{
+			ChangeState (ClickState.CloseUI);
+		//	box.enabled = true;
+		}
+	}
+
 
     #endregion
 

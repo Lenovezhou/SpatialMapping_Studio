@@ -4,6 +4,7 @@ using UnityEngine;
 public class StateMechinePro : MonoBehaviour
 {
 	protected float statetimer;
+	[SerializeField]
 	private State _state;
 
 	public State STATE {

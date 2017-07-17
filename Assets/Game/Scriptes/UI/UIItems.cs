@@ -23,13 +23,23 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
 
     SpatialUnderstandingCursor cursor;
 
+	//用于focus时播放声音计时
+	float timer = 1;
+	bool isplayedfocus = false;
+
+
+	//focus时实际转动的物体
+	private Transform modelobj;
+	[SerializeField]
+	private Transform endpos;
+
 
     #endregion
 
-    #region 接口实现
+      #region 接口实现
     public void OnFocusEnter()
     {
-        Sound.Instance.PlayerEffect("Focus");
+		Sound.Instance.PlayerEffect("Focus");
         STATE = onfocus;
     //    Debug.Log("OnFocusEnter");
     }
@@ -42,10 +52,15 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
+		Sound.Instance.PlayerEffect ("DropDown");
         GameObject go = ObjectPool.Instance.Spawn(gameObject.name);
     //    Debug.Log("name========" + gameObject.name);
     //    go.GetComponentInChildren<MeshRenderer>().material.color = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
         ItemPro pro = go.GetComponent<ItemPro>();
+		if (pro == null) 
+		{
+			pro = go.AddComponent<ItemPro> ();
+		}
         pro.cursor = cursor;
         pro.Init();
         pro.ChangeState(ClickState.Move);
@@ -67,32 +82,50 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
         ido.OnEnter = IdoEnter;
         ido.OnUpdate = IdoUpdater;
 
+		endpos = transform.Find ("EndPos");
+		modelobj = transform.Find ("Model");
 
         if (GetComponent<BoxCollider>() == null)
         {
             gameObject.AddComponent<BoxCollider>();
         }
 
-        originepos = transform.localPosition;
-        originrot = transform.localEulerAngles;
+		originepos = modelobj.transform.localPosition;
+		originrot = modelobj.transform.localEulerAngles;
+
+
 
     }
 
     void Update()
     {
         OnUpdater(Time.deltaTime);
+		timer += Time.deltaTime;
     }
     #endregion
 
     #region 状态机方法
     void FocusEnter()
     {
-
+//		timer = 0;
+//		isplayedfocus = false;
     }
     void FocusUpdater(float timer)
     {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(originepos.x, originepos.y + 1, originepos.z), timer * 2);
-        transform.Rotate(Vector3.back, timer * 90);
+		if (endpos != null) {
+			modelobj.transform.position = Vector3.Lerp(modelobj.transform.position, endpos.position, timer * 2);	//new Vector3(originepos.x, originepos.y + 1, originepos.z)
+		} else {
+			modelobj.transform.localPosition = Vector3.Lerp(modelobj.transform.localPosition, new Vector3(originepos.x, originepos.y + 1, originepos.z), timer * 2);	//new Vector3(originepos.x, originepos.y + 1, originepos.z)
+		}
+		modelobj.transform.Rotate(Vector3.back, timer * 90);
+
+		if (timer > 1f && !isplayedfocus)
+		{
+//			isplayedfocus = true;
+//			Sound.Instance.PlayerEffect("Focus");
+			//timer = 0;
+		}
+
     }
     void FocuseLeave()
     {
@@ -108,8 +141,8 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     {
         if (statetimer < 2)
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, originepos, timer * 2);
-            transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, originrot, timer * 2);
+			modelobj.transform.localPosition = Vector3.Lerp(modelobj.transform.localPosition, originepos, timer * 2);
+			modelobj.transform.localEulerAngles = Vector3.Lerp(modelobj.transform.localEulerAngles, originrot, timer * 2);
         }
     }
     #endregion

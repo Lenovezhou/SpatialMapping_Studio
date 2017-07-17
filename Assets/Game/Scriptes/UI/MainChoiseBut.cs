@@ -66,11 +66,10 @@ public class MainChoiseBut :StateMechinePro , IFocusable, IInputClickHandler
         ido.OnUpdate = IdoUpdater;
 
 
-        if (GetComponent<BoxCollider>() == null)
-        {
-            gameObject.AddComponent<BoxCollider>();
-        }
-
+//        if (GetComponent<BoxCollider>() == null)
+//        {
+//            gameObject.AddComponent<BoxCollider>();
+//        }
        // forwardBG = transform.Find("ListButton").GetComponent<SpriteRenderer>();
         backgurund = transform.Find("ButtonPlate").GetComponent<SpriteRenderer>().material;
         Icorn = transform.Find("Object001");

@@ -68,6 +68,7 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             result.Hit = GazeManager.Instance.IsGazingAtObject;
             result.Position = GazeManager.Instance.HitPosition;
             result.Normal = GazeManager.Instance.HitInfo.normal;
+//			Debug.Log ("父类：：calculate+++++" + GazeManager.Instance.HitPosition);
             return result;
         }
 

@@ -79,4 +79,15 @@ public class Sound : Singleton<Sound>
     {
         m_Effectaudio.Stop();
     }
+
+	public void InteractiveEffect( bool isactive)
+	{
+		m_Effectaudio.enabled = isactive;
+	}
+
+	public void PlayerOneShout(AudioClip clip,Vector3 pos)
+	{
+		AudioSource.PlayClipAtPoint (clip,pos);
+	}
+
 }

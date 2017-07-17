@@ -38,6 +38,9 @@ public class ModelsUI : LineDrawer
 
     private bool placedMenuNeedsBillboard = false;
 
+	//Panel是否到位
+	private bool ispanelarrive = false;
+
     public bool HasPlacedMenu { get; private set; }
     public AnimatedBox MenuAnimatedBox { get; private set; }
 
@@ -69,6 +72,7 @@ public class ModelsUI : LineDrawer
     #region Unity回调
     private void Start()
     {
+		Sound.Instance.InteractiveEffect (ispanelarrive);
         // Setup the menu
             SetupMenus();
         //  InitializedEdge();
@@ -102,9 +106,15 @@ public class ModelsUI : LineDrawer
                 Vector3 lookDirTarget = Camera.main.transform.position - transform.position;
                 lookDirTarget = (new Vector3(lookDirTarget.x, 0.0f, lookDirTarget.z)).normalized;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(-lookDirTarget), Time.deltaTime * 10.0f);
-            }
+				if (!ispanelarrive)
+				{
+					ispanelarrive = true;
+					Sound.Instance.InteractiveEffect (ispanelarrive);
+				}
+			}
             else
             {
+//				Debug.Log ("transform.position"+ transform.position);
                 // Keep the UI locked to the animated box
                 transform.position = MenuAnimatedBox.AnimPosition.Evaluate(MenuAnimatedBox.Time);
                 transform.rotation = MenuAnimatedBox.Rotation * Quaternion.AngleAxis(360.0f * MenuAnimatedBox.AnimRotation.Evaluate(MenuAnimatedBox.Time), Vector3.up);
@@ -141,12 +151,13 @@ public class ModelsUI : LineDrawer
         //    ShapeDefinition.Instance.CreateShapes();
 
             // Make sure our solver is initialized
-         //   LevelSolver.Instance.InitializeSolver();
+            LevelSolver.Instance.InitializeSolver();
 
             // Setup the menu
             StartCoroutine(SetupMenu());
             CleanmeshAndText();
-            Sound.Instance.PlayerEffect("PlaceMenu");
+           // Sound.Instance.PlayerEffect("PlaceMenu");
+			Sound.Instance.PlayerOneShout(Resources.Load<AudioClip>("Sound/PlaceMenu"),Vector3.zero);
         }
     }
     #endregion
@@ -233,7 +244,7 @@ public class ModelsUI : LineDrawer
 
     private void PlaceMenu(Vector3 position, Vector3 normal, bool needsBillboarding = false)
     {
-//        Debug.Log("<color=red>执行多少次？？？？？？</color>");
+//		Debug.Log("<color=red>执行多少次？？？？？？"+position+"</color>");
         // Offset in a bit
         position -= normal * 0.05f;
         Quaternion rotation = Quaternion.LookRotation(normal, Vector3.up);
@@ -277,15 +288,16 @@ public class ModelsUI : LineDrawer
             panels[i].button.gameObject.AddComponent<MainChoiseBut>();
             Transform trans = panels[i].grid;
             int count = trans.childCount;
-            for (int j = 0; j < count; j++)
+			for (int j = 0; j <count; j++)
             {
+				
                 UIItems item = trans.GetChild(j).gameObject.AddComponent<UIItems>();
                 item.Init(cursor);
             }
         }
 
         //默认打开家具
-        SetPanelInteractive(UItype.Furniture);
+		SetPanelInteractive(UItype.Furniture);
     }
 
     private void SetPanelInteractive(UItype panel)
