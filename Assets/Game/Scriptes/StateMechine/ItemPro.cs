@@ -205,6 +205,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0) && _cS == ClickState.Move)
         {
+            Debug.Log("CloseUI");
             ChangeState(ClickState.CloseUI);
             Sound.Instance.PlayerEffect("DropDown");
         }
@@ -304,6 +305,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
     }
 	void MoveLeave()
 	{
+        canair = false;
 		box.enabled = true;
 		cursor.Target = null;
 		Sound.Instance.PlayerEffect("DropDown");
@@ -464,6 +466,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
             //InputManager.Instance.OverrideFocusedObject = gameObject;
             ChangeState(ClickState.CloseUI);
             Sound.Instance.PlayerEffect("DropDown");
+            Debug.Log("CloseUI");
         }
         
     }

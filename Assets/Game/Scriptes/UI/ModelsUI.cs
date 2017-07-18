@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Examples.InteractiveElements;
 using UnityEngine.VR.WSA.Input;
+using HoloToolkit.Unity.InputModule;
 
 public delegate void Air_Tap_E(InteractionSourceKind source, int tapCount, Ray headRay);
 
@@ -297,7 +298,8 @@ public class ModelsUI : LineDrawer
             int count = trans.childCount;
 			for (int j = 0; j <count; j++)
             {
-				
+                //CursorModifier modifier = trans.GetChild(j).gameObject.AddComponent<CursorModifier>();
+                //modifier.SnapCursor = true;
                 UIItems item = trans.GetChild(j).gameObject.AddComponent<UIItems>();
                 item.Init(cursor,this);
             }
