@@ -24,9 +24,21 @@ public class UIManager : MonoBehaviour {
 			rotate.OnDownEvent.RemoveAllListeners ();
 			delet.OnDownEvent.RemoveAllListeners ();
 
-			move.OnDownEvent.AddListener (()=>{itemobj.ChangeState(ClickState.Move);});
-			scale.OnDownEvent.AddListener (()=>{itemobj.ChangeState(ClickState.Scale);});
-			rotate.OnDownEvent.AddListener (()=>{itemobj.ChangeState(ClickState.Rotate);});
+			move.OnDownEvent.AddListener (
+                ()=>{
+                    itemobj.ChangeState(ClickState.Move);
+                    Sound.Instance.PlayerEffect("HitOnUI");
+                });
+			scale.OnDownEvent.AddListener (
+                ()=>{
+                    itemobj.ChangeState(ClickState.Scale);
+                    Sound.Instance.PlayerEffect("HitOnUI");
+                });
+			rotate.OnDownEvent.AddListener (
+                ()=>{
+                    itemobj.ChangeState(ClickState.Rotate);
+                    Sound.Instance.PlayerEffect("HitOnUI");
+                });
 			delet.OnDownEvent.AddListener (
 				()=>{itemobj.ChangeState(ClickState.Delet);
 					ObjectPool.Instance.UnSpawn(gameObject);

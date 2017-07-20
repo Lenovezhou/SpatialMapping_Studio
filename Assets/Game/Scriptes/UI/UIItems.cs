@@ -108,7 +108,7 @@ public class UIItems : StateMechinePro, IFocusable, IInputClickHandler
     void FocusEnter()
     {
  //       InputManager.Instance.OverrideFocusedObject = gameObject;
-        Sound.Instance.PlayerEffect("Focus");
+        Sound.Instance.PlayerEffect("Focus" , 0.1f);
     }
     void FocusUpdater(float timer)
     {

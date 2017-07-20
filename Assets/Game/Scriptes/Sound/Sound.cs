@@ -58,7 +58,7 @@ public class Sound : Singleton<Sound>
         m_BGaudio.Stop();
     }
 
-    public void PlayerEffect(string name)
+    private void PlayerEffect(string name)
     {
         string path = "";
         if (string.IsNullOrEmpty(ResourceDir))
@@ -69,10 +69,15 @@ public class Sound : Singleton<Sound>
         {
             path = ResourceDir + "/" + name;
         }
-
         AudioClip clip = Resources.Load<AudioClip>(path);
         m_Effectaudio.clip = clip;
         m_Effectaudio.PlayOneShot(clip);
+    }
+
+    public void PlayerEffect(string name, float volume = 1)
+    {
+        m_Effectaudio.volume = volume;
+        PlayerEffect(name);
     }
 
     public void StopEffect()

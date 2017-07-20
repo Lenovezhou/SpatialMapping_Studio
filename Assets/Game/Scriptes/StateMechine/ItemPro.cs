@@ -76,29 +76,29 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
     public void OnInputClicked (InputClickedEventData eventData)
 	{
-        Debug.Log("点击到么了，，，，，上个状态为：：：：：：：" + _cS.ToString() );
-      
         switch (_cS)
         {
-            case ClickState.Ido:
             case ClickState.CloseUI:
                 ChangeState(ClickState.OpenUI);
                 break;
-            case ClickState.Scale:
+            case ClickState.OpenUI:
             case ClickState.Rotate:
-                ChangeState(ClickState.Ido);
+            case ClickState.Scale:
+                ChangeState(ClickState.CloseUI);
                 break;
-		//	case ClickState.Move:
-			case ClickState.OpenUI:
-                Debug.Log("子物体执行：：OnInputClicked：：：" + gameObject.name);
-                ChangeState (ClickState.CloseUI);
-				box.enabled = true;
-                break;             
+            //case ClickState.Ido:
+            //    break;
+            //case ClickState.Move:
+            //    break;
+            //case ClickState.Rotate:
+            //    break;
+            //case ClickState.Scale:
+            //    break;
+            //case ClickState.Delet:
+            //    break;
             default:
                 break;
         }
-
-
 	}
 
 	#endregion
@@ -121,6 +121,10 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
     #region 字段
 
+    //是否允许AirTap
+    protected bool canairtap = false;
+
+
     //自身放大缩小极限
     private float scaler_max;
     private float scaler_min;
@@ -138,8 +142,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
     //缩放图标
 	private GameObject ScaleIcon;
 
-    //是否允许AirTap
-    private bool canair = false;
+    
 
     //点击button改变状态
     [SerializeField]
@@ -236,12 +239,13 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 	//打开UI
 	void OpenUIEnter()
 	{
+        Sound.Instance.PlayerEffect("ShowUI");
         if (UI == null)
         {
             UI = ObjectPool.Instance.Spawn("ItemUI");
         }
 
-        box.enabled = false;
+    //    box.enabled = false;
 
         Transform pos = transform.Find ("UIPos");
 		UI.transform.SetParent (pos.transform);
@@ -261,16 +265,24 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 		{
 			UI.transform.localScale = Vector3.one;
 		}
+
+        if (statetimer > 1)
+        {
+            canairtap = true;
+        }
+
 	}
     void OpenUILeave()
     {
-        box.enabled = true;
+    //    box.enabled = true;
+        canairtap = false;
     }
 
 
 	//关闭UI
 	void CloseUIEnter()
 	{
+        Sound.Instance.PlayerEffect("CloseUI");
     }
 	void CloseUIUpdater(float timer)
 	{
@@ -298,14 +310,14 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 	}
 	void MoveUpdater(float timer)
 	{
-        if (statetimer > 1 && !canair)
+        if (statetimer > 1)
         {
-            canair = true;
+            canairtap = true;
         }
     }
 	void MoveLeave()
 	{
-        canair = false;
+        canairtap = false;
 		box.enabled = true;
 		cursor.Target = null;
 		Sound.Instance.PlayerEffect("DropDown");
@@ -321,10 +333,15 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 	void RotateUpdater(float timer)
 	{
 		RotateIcon.transform.Rotate(Vector3.back, timer * 5);
-	}
+        if (statetimer > 1)
+        {
+            canairtap = true;
+        }
+    }
     void RoateLeave()
     {
         RotateIcon.SetActive(false);
+        canairtap = false;
     }
 
 
@@ -335,11 +352,15 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 	}
 	void ScaleUpdater(float timer)
 	{
-		
-	}
+        if (statetimer > 1)
+        {
+            canairtap = true;
+        }
+    }
 	void ScaleLeave()
 	{
 		ScaleIcon.SetActive (false);
+        canairtap = false;
 	}
 
     //空闲状态
@@ -404,7 +425,7 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
 		_delete.OnEnter = DeleteEnter;
 
-        canair = false;
+        canairtap = false;
 
         box = GetComponent<BoxCollider> ();
 		//DestroyImmediate (box);
@@ -421,7 +442,6 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 
     public void ChangeState(ClickState cs)
 	{
-        Debug.Log(cs.ToString());
 		switch (cs)
 		{
 		case ClickState.Ido:
@@ -458,17 +478,37 @@ public class ItemPro : StateMechinePro,IFocusable,IInputClickHandler,IManipulati
 		ScaleIcon.GetComponent<SpriteRenderer> ().color = c;
 	}
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="tapCount"></param>
+    /// <param name="headRay"></param>
     private void OnAirTap(InteractionSourceKind source, int tapCount, Ray headRay)
     {
-        if (this._cS == ClickState.Move && canair)
+        Debug.Log("OnAirTap   ======" + this._cS.ToString() + "_______" +canairtap);
+        if (canairtap)
         {
-            //InputManager.Instance.OverrideFocusedObject = gameObject;
-            ChangeState(ClickState.CloseUI);
-            Sound.Instance.PlayerEffect("DropDown");
-            Debug.Log("CloseUI");
+            switch (this._cS)
+            {
+                case ClickState.Move:
+                    ChangeState(ClickState.OpenUI);
+                    Sound.Instance.PlayerEffect("DropDown");
+                    break;
+                case ClickState.OpenUI:
+                //    ChangeState(ClickState.CloseUI);
+                    break;
+                case ClickState.Rotate:
+                case ClickState.Scale:
+                    ChangeState(ClickState.CloseUI);
+                    break;
+                case ClickState.Delet:
+                    break;
+                default:
+                    break;
+            }
+
         }
-        
     }
 
     #endregion
